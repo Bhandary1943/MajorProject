@@ -1,5 +1,5 @@
-from tkinter import Image
-from PIL import Image
+# from tkinter import Image
+# from PIL import Image
 import streamlit as st
 import pandas as pd
 import re
@@ -257,31 +257,28 @@ skills_dict = dict(zip(df['Job Title'], df['Skills']))
 
 # Sidebar Navigation
 st.sidebar.title("Navigation")
-page = st.sidebar.selectbox("Go to", ["Home","About Us", "Resume Analyzer", "Find Jobs", "Enhance Skills", "Contact Us"])
+page = st.sidebar.selectbox("Go to", ["About Us", "Resume Analyzer", "Find Jobs", "Enhance Skills", "Contact Us"])
 
 
 # Header (no line breaks, ensures single-line heading)
 st.markdown("<div class='title'>Intelligent Resume Analysis And Job Fit Assessment System</div>", unsafe_allow_html=True)
 
-if page == "Home":
-    st.markdown("<h1 style='text-align: center;'>Welcome to Our Platform!</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center;'>We help you match your resumes with top job opportunities tailored to your skillset.</p>", unsafe_allow_html=True)
+# if page == "Home":
+#     st.markdown("<h1 style='text-align: center;'>Welcome to Our Platform!</h1>", unsafe_allow_html=True)
+#     st.markdown("<p style='text-align: center;'>We help you match your resumes with top job opportunities tailored to your skillset.</p>", unsafe_allow_html=True)
     
-    # Path to your logo image (make sure it's correct)
-    image_path = r"C:\\Users\\reeth\\Documents\\RESUME ANALYZER\\images.jpg"  # Adjust the path to your image
+#     # Path to your logo image (make sure it's correct)
+#     image_path = r"C:\\Users\\reeth\\Documents\\RESUME ANALYZER\\images.jpg"  # Adjust the path to your image
 
-    # Open the image using PIL
-    image = Image.open(image_path)
+#     # Open the image using PIL
+#     image = Image.open(image_path)
 
-    # Display the image in the Streamlit app
-    st.image(image,  use_container_width=True)
+#     # Display the image in the Streamlit app
+#     st.image(image,  use_container_width=True)
 
-    # Button to navigate to About Us Page
-    # if st.button("Go to About Us"):
-    #     st.session_state.page = "About Us"  # Navigate to About Us page
 
 # About Us Page
-elif page == "About Us":
+if page == "About Us":
     st.markdown("<div class='subtitle'>About Us</div>", unsafe_allow_html=True)
     st.write("""
     Welcome to the **Intelligent Resume Analysis and Job Fit Assessment System**! 
