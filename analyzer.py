@@ -16,7 +16,7 @@ from sklearn.neighbors import NearestNeighbors
 
 
 # Load the Dataset
-df = pd.read_csv('cleaned_file.csv(1)')
+df = pd.read_csv('cleaned_file.csv')
 stop_words = set([
     'i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', 'your', 'yours', 
     'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', 'her', 'hers', 
