@@ -54,7 +54,6 @@ def clean_text(txt):
     
     # Tokenization
     tokens = re.findall(r'\b\w+\b', clean_text)
-
     
     tokens = [word for word in tokens if word not in stop_words]
     
@@ -86,11 +85,7 @@ st.markdown("""<style>
         background-color: grey;  /* Light, clean background */
         color: pink;
         font-family: Georgia, 'Times New Roman', Times, serif;
-
     }
-
-   
-
     .title {
         text-align: center;
         color: blue;  /* Bright Blue */
@@ -98,8 +93,6 @@ st.markdown("""<style>
         font-weight: 700;
         text-transform: uppercase;
    font-family: Georgia, 'Times New Roman', Times, serif;
-
-
     }
 
     .subtitle {
@@ -108,9 +101,7 @@ st.markdown("""<style>
         color: red;
         font-weight: 650;
         font-family: Arial, Helvetica, sans-serif;
-
     }
-
     .footer {
         text-align: center;
         padding: 20px;
@@ -323,7 +314,7 @@ if page == "About Us":
             st.session_state.job_index = end_index  # Update to load the next set of jobs
 
 
-# Resume Analyzer Page
+
 # Resume Analyzer Page
 elif page == "Resume Analyzer":
     st.markdown("<div class='subtitle'>Resume Analyzer</div>", unsafe_allow_html=True)
@@ -453,13 +444,10 @@ if page == "Find Jobs":
         </ul>
     </div>
     """, unsafe_allow_html=True)
+    
     # Custom CSS for styling the page
     st.markdown("""
     <style>
-   
-    
-   
-    
     .j.job-portal-link {
     background-color: #ff1493;  /* Pink color */
     color: #fff;  /* White text for contrast */
@@ -510,8 +498,7 @@ if page == "Find Jobs":
     </style>
     """, unsafe_allow_html=True)
 
-   
-    
+
     # Create 3 columns for the links
     col1, col2, col3 = st.columns(3)
     
@@ -643,9 +630,6 @@ if page == "Enhance Skills":
     }
     </style>
     """, unsafe_allow_html=True)
-
-
-
         
 
 # Streamlit page for Contact Us
@@ -659,10 +643,8 @@ if page == "Contact Us":
     You can contact us using the following methods:
 
     - **Email**: [resumeanalyzerr@gmail.com](mailto:resumeanalyzerr@gmail.com)
-    - **Phone**: +91 9480199605
+    - **Phone**: +91 7676346378
     """)
-
-    
 
     # Custom CSS for better design and layout
     st.markdown("""
