@@ -278,7 +278,7 @@ if page == "Home":
 
 
 # About Us Page
-if page == "About Us":
+elif page == "About Us":
     st.markdown("<div class='subtitle'>About Us</div>", unsafe_allow_html=True)
     st.write("""
     Welcome to the **Intelligent Resume Analysis and Job Fit Assessment System**! 
