@@ -268,7 +268,7 @@ if page == "Home":
     st.markdown("<p style='text-align: center;'>We help you match your resumes with top job opportunities tailored to your skillset.</p>", unsafe_allow_html=True)
     
     # Path to your logo image (make sure it's correct)
-    image_path = 'images/C:\Users\reeth\Documents\RESUME ANALYZER\images.jpg'  # Adjust the path to your image
+    image_path = image_path = 'C:/Users/reeth/Documents/RESUME ANALYZER/images.jpg' # Adjust the path to your image
 
     # Open the image using PIL
     image = Image.open(image_path)
