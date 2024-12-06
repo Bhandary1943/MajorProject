@@ -259,7 +259,7 @@ page = st.sidebar.selectbox("Go to", ["Home","About Us", "Resume Analyzer", "Fin
 st.markdown("<div class='title'>Intelligent Resume Analysis And Job Fit Assessment System</div>", unsafe_allow_html=True)
 st.markdown(
     """
-    <div style="text-align: center; color:  #e67e22; font-size: 10px; ">
+    <div style="text-align: center; color:  #9b59b6; font-size: 15px; ">
         Align. Review. Know. Keep Growing.
     </div>
     """, 
