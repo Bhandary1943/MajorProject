@@ -259,8 +259,8 @@ page = st.sidebar.selectbox("Go to", ["Home","About Us", "Resume Analyzer", "Fin
 st.markdown("<div class='title'>Intelligent Resume Analysis And Job Fit Assessment System</div>", unsafe_allow_html=True)
 
 if page == "Home":
-    st.markdown("""
     <h1> Welcome To Our Platform </h1>
+    st.markdown("""
     Your Journey to a Perfect Job Starts Here! 🚀
     This platform isn't just about finding a job—it's about **unlocking your full potential**.
     
@@ -293,7 +293,7 @@ if page == "Home":
 
     # Call-to-Action
     st.markdown("---")
-    st.subheader("🌱 Ready to Grow Your Career🧐?")
+    st.subheader("🌱 Ready to Grow Your Career?")
     st.write("Let's begin this journey. Use the sidebar to start exploring the platform, and take the first step toward your dream job!")
 
     # Fun Engaging Quote
@@ -306,7 +306,7 @@ if page == "Home":
     st.markdown("---")
     st.subheader("🔥 What’s Waiting for You:")
     st.write("💡 **Resume Analyzer** – Quickly see which jobs match your experience and skills.")
-    st.write("🔍 **Find Jobs** – Explore new opportunities from LinkedIn, Indeed, Naukri, and more.")
+    st.write("🧐 **Find Jobs** – Explore new opportunities from LinkedIn, Indeed, Naukri, and more.")
     st.write("📚 **Enhance Skills** – Skill-building resources from top platforms like Coursera and edX.")
 
     # Fun and Engaging Closing
