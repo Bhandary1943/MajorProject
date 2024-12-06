@@ -260,7 +260,7 @@ st.markdown("<div class='title'>Intelligent Resume Analysis And Job Fit Assessme
 st.markdown(
     """
     <div style="text-align: center; color: #2ecc71; font-size: 24px; font-weight: bold;">
-        "Analyze. Refine. Know. Knock."
+        Align. Review. Know. Keep Growing.
     </div>
     """, 
     unsafe_allow_html=True
