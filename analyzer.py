@@ -278,7 +278,7 @@ st.markdown("<div class='title'>Intelligent Resume Analysis And Job Fit Assessme
 
 
 # About Us Page
-elif page == "About Us":
+if page == "About Us":
     st.markdown("<div class='subtitle'>About Us</div>", unsafe_allow_html=True)
     st.write("""
     Welcome to the **Intelligent Resume Analysis and Job Fit Assessment System**! 
