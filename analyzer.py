@@ -259,8 +259,10 @@ page = st.sidebar.selectbox("Go to", ["Home","About Us", "Resume Analyzer", "Fin
 st.markdown("<div class='title'>Intelligent Resume Analysis And Job Fit Assessment System</div>", unsafe_allow_html=True)
 
 if page == "Home":
-    st.title("Welcome To Our Platform")
     st.markdown("""
+    <div style="text-align: center; color: #3498db; font-size: 36px; font-weight: bold;">
+            Welcome To Our Platform
+    </div>
     Your Journey to a Perfect Job Starts Here! 🚀
     This platform isn't just about finding a job—it's about **unlocking your full potential**.
     
