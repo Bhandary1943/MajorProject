@@ -1,24 +1,24 @@
-# from tkinter import Image
-# from PIL import Image
-import streamlit as st
-import pandas as pd
-import re
-import nltk
-import numpy as np
-import matplotlib.pyplot as plt
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-from nltk.stem import WordNetLemmatizer
-import fitz  # PyMuPDF for PDF handling
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.neighbors import NearestNeighbors
+# Importing required libraries
+import streamlit as st  
+import pandas as pd  
+import re  
+import nltk  
+import numpy as np  
+import matplotlib.pyplot as plt 
+import smtplib  
+from email.mime.text import MIMEText  
+from email.mime.multipart import MIMEMultipart  
+from nltk.corpus import stopwords  
+from nltk.tokenize import word_tokenize  
+from nltk.stem import WordNetLemmatizer  
+import fitz  # PyMuPDF for handling PDF files
+from sklearn.feature_extraction.text import TfidfVectorizer  
+from sklearn.neighbors import NearestNeighbors  
 
 
 # Load the Dataset
 df = pd.read_csv('cleaned_file.csv')
+
 stop_words = set([
     'i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', 'your', 'yours', 
     'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', 'her', 'hers', 
@@ -37,14 +37,12 @@ stop_words = set([
     'weren', 'won', 'wouldn'
 ])
 
-# Manually define lemmatization (basic implementation using word forms)
 lemmatizer_dict = {
     'running': 'run', 'ran': 'run', 'runs': 'run', 
     'better': 'good', 'best': 'good', 'worse': 'bad', 'worst': 'bad',
     'happier': 'happy', 'happiest': 'happy', 'sadder': 'sad', 'saddest': 'sad',
     'more': 'much', 'most': 'much', 'less': 'little', 'least': 'little',
     'doing': 'do', 'did': 'do', 'does': 'do', 'done': 'do'
-    # Add more words as needed for lemmatization
 }
 
 # Preprocessing and Cleaning Functions
@@ -55,8 +53,7 @@ def clean_text(txt):
     clean_text = re.sub(r'\s+', ' ', clean_text).strip().lower()
     
     # Tokenization
-    tokens = re.findall(r'\b\w+\b', clean_text)
-    
+    tokens = re.findall(r'\b\w+\b', clean_text)  
     tokens = [word for word in tokens if word not in stop_words]
     
     # Lemmatize using the manually defined lemmatizer_dict
@@ -87,6 +84,7 @@ st.markdown("""<style>
         background-color: grey;  /* Light, clean background */
         color: pink;
         font-family: Georgia, 'Times New Roman', Times, serif;
+
     }
     .title {
         text-align: center;
@@ -96,13 +94,13 @@ st.markdown("""<style>
         text-transform: uppercase;
    font-family: Georgia, 'Times New Roman', Times, serif;
     }
-
     .subtitle {
         text-align: left;
         font-size: 20px;
         color: red;
         font-weight: 650;
         font-family: Arial, Helvetica, sans-serif;
+
     }
     .footer {
         text-align: center;
@@ -117,8 +115,6 @@ st.markdown("""<style>
         gap: 20px;
         margin-top: 20px;
     }
-
-    /* Job Item Style */
     .job-item {
         background-color: #ff6f61;  /* Bright Coral */
         color: white;
@@ -190,7 +186,6 @@ st.markdown("""<style>
         color: white;
     }
 
-    /* Explore More Button */
     .explore-more-btn {
         background-color: #ff9800;  /* Bright Orange */
         color: white;
@@ -257,25 +252,68 @@ skills_dict = dict(zip(df['Job Title'], df['Skills']))
 
 # Sidebar Navigation
 st.sidebar.title("Navigation")
-page = st.sidebar.selectbox("Go to", ["About Us", "Resume Analyzer", "Find Jobs", "Enhance Skills", "Contact Us"])
+page = st.sidebar.selectbox("Go to", ["Home","About Us", "Resume Analyzer", "Find Jobs", "Enhance Skills", "Contact Us"])
 
 
 # Header (no line breaks, ensures single-line heading)
 st.markdown("<div class='title'>Intelligent Resume Analysis And Job Fit Assessment System</div>", unsafe_allow_html=True)
 
-# if page == "Home":
-#     st.markdown("<h1 style='text-align: center;'>Welcome to Our Platform!</h1>", unsafe_allow_html=True)
-#     st.markdown("<p style='text-align: center;'>We help you match your resumes with top job opportunities tailored to your skillset.</p>", unsafe_allow_html=True)
+if page == "Home":
+    st.markdown("""
+    <h1> Welcome To Our Platform </h1>
+    Your Journey to a Perfect Job Starts Here! 🚀
+    This platform isn't just about finding a job—it's about **unlocking your full potential**.
     
-#     # Path to your logo image (make sure it's correct)
-#     image_path = image_path = r'C:/Users/reeth/Documents/RESUME ANALYZER/images.jpg' # Adjust the path to your image
+    Here's how we can help you:
+    - **Analyze your resume** and match it with the best job roles 📝
+    - **Discover exciting career opportunities** across top platforms 🌐
+    - **Enhance your skills** with curated learning resources to level up 🔥
+    """)
+    st.markdown("---")
+    st.subheader("🎯 **How to Explore the App**")
+    st.write("""
+    👉 **Go to the left sidebar** (click the arrow in the top-left corner) to explore all the amazing features we offer.  
+    The sidebar is your gateway to:
+    - **About us** - List of Jobs and Skills
+    - **Resume Analyzer** – Upload and analyze your resume
+    - **Find Jobs** – Search for job opportunities
+    - **Enhance Skills** – Discover courses and tutorials
+    - **Contact us** - Feel free to contact us anytime
+    """)
+    
+    # Animated Section (text or image)
+    st.markdown("---")
+    st.subheader("Why This Platform is a Game Changer:")
+    st.markdown("""
+    ➡️ **Smart Resume Matching**: Upload your resume and let us analyze it for the best job matches!  
+    ➡️ **Top Job Platforms**: Explore job opportunities on the most popular platforms.  
+    ➡️ **Skill Enhancement**: Discover courses that empower you to stay ahead in the job market.  
+    """)
+    
 
-#     # Open the image using PIL
-#     image = Image.open(image_path)
+    # Call-to-Action
+    st.markdown("---")
+    st.subheader("🌱 Ready to Grow Your Career🧐?")
+    st.write("Let's begin this journey. Use the sidebar to start exploring the platform, and take the first step toward your dream job!")
 
-#     # Display the image in the Streamlit app
-#     st.image(image,  use_container_width=True)
+    # Fun Engaging Quote
+    st.markdown("""
+    > **"The best way to predict your future is to create it."** – Abraham Lincoln  
+    *Start building your future today!*
+    """)
+    
+    # Final Motivational Section with Icons
+    st.markdown("---")
+    st.subheader("🔥 What’s Waiting for You:")
+    st.write("💡 **Resume Analyzer** – Quickly see which jobs match your experience and skills.")
+    st.write("🔍 **Find Jobs** – Explore new opportunities from LinkedIn, Indeed, Naukri, and more.")
+    st.write("📚 **Enhance Skills** – Skill-building resources from top platforms like Coursera and edX.")
 
+    # Fun and Engaging Closing
+    st.markdown("""
+    🌟 It's time to take control of your career and make your mark in the world! 
+    Use the sidebar to get started on your exciting journey to success! 🎯
+    """)
 
 # About Us Page
 if page == "About Us":
@@ -328,7 +366,6 @@ if page == "About Us":
         explore_button = st.button("Click here to explore more jobs", key="explore_more", use_container_width=True)
         if explore_button:
             st.session_state.job_index = end_index  # Update to load the next set of jobs
-
 
 
 # Resume Analyzer Page
@@ -426,7 +463,6 @@ elif page == "Resume Analyzer":
                 <p style="text-align:center;">By analyzing your resume, we've matched you with top roles based on your skills fit. Keep enhancing your skills and applying for opportunities!</p>
                 """, unsafe_allow_html=True)
 
-
 # Find Jobs Section
 if page == "Find Jobs":
     
@@ -463,7 +499,7 @@ if page == "Find Jobs":
     
     # Custom CSS for styling the page
     st.markdown("""
-    <style>
+    <style>    
     .j.job-portal-link {
     background-color: #ff1493;  /* Pink color */
     color: #fff;  /* White text for contrast */
@@ -514,7 +550,8 @@ if page == "Find Jobs":
     </style>
     """, unsafe_allow_html=True)
 
-
+   
+    
     # Create 3 columns for the links
     col1, col2, col3 = st.columns(3)
     
@@ -537,6 +574,7 @@ if page == "Find Jobs":
     st.markdown("<div class='encouragement'>Pro Tip: While applying, make sure to tailor your resume for each job. Highlight relevant skills, experiences, and achievements that align with the job description.</div>", unsafe_allow_html=True)
 
     st.markdown("<div class='encouragement'>Keep improving your skills and learning new ones. The right job is just around the corner!</div>", unsafe_allow_html=True)
+
 
 # Enhance Skills Page
 if page == "Enhance Skills":
@@ -638,15 +676,15 @@ if page == "Enhance Skills":
 .content {
     font-size: 18px;
     line-height: 1.6;
-    color: #333;  /* Dark color for better readability */
+  /* Dark color for better readability */
 }
     .content h3 {
         color: #333;
-        font-size: 24px;
+        
     }
     </style>
     """, unsafe_allow_html=True)
-        
+
 
 # Streamlit page for Contact Us
 if page == "Contact Us":
@@ -662,56 +700,14 @@ if page == "Contact Us":
     - **Phone**: +91 7676346378
     """)
 
+    
     # Custom CSS for better design and layout
     st.markdown("""
     <style>    
-    .stButton>button {
-        background-color: #4CAF50;
-        color: white;
-        font-size: 16px;
-        border: none;
-        cursor: pointer;
-        padding: 10px 20px;
-        border-radius: 5px;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .stButton>button:hover {
-        background-color: #45a049;
-    }
-
-    /* Input fields */
-    .stTextInput>div>input {
-        font-size: 16px;
-        padding: 10px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-    }
-
-    .stTextArea>div>textarea {
-        font-size: 16px;
-        padding: 10px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-    }
-
-    /* Text alignment */
-    .stTextInput, .stTextArea {
+        .stTextInput, .stTextArea {
         margin-bottom: 20px;
     }
 
-    /* Rating Style (Stars) */
-    .stRadio>div>label>div {
-        display: flex;
-        justify-content: center;
-        font-size: 24px;
-        color: #FFD700;  /* Gold color for stars */
-    }
-
-    .stRadio>div>label>div>input {
-        cursor: pointer;
-    }
-    
     </style>
     """, unsafe_allow_html=True)
 
