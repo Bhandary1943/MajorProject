@@ -257,6 +257,14 @@ page = st.sidebar.selectbox("Go to", ["Home","About Us", "Resume Analyzer", "Fin
 
 # Header (no line breaks, ensures single-line heading)
 st.markdown("<div class='title'>Intelligent Resume Analysis And Job Fit Assessment System</div>", unsafe_allow_html=True)
+st.markdown(
+    """
+    <div style="text-align: center; color: #2ecc71; font-size: 24px; font-weight: bold;">
+        "Analyze. Refine. Know. Knock."
+    </div>
+    """, 
+    unsafe_allow_html=True
+)
 
 if page == "Home":
     st.markdown(
