@@ -3,6 +3,7 @@
 
 from sklearn.metrics import accuracy_score
 from PyPDF2 import PdfReader
+import PyPDF2
 import streamlit as st
 import pandas as pd
 import re
@@ -67,15 +68,41 @@ def clean_text(txt):
     return ' '.join(tokens)
 
 # Extract text from PDF using PyMuPDF
-def extract_text_from_pdf(uploaded_file):
+# def extract_text_from_pdf(uploaded_file):
+#     text = ""
+#     try:
+#         with fitz.open(stream=uploaded_file.read(), filetype="pdf") as doc:
+#             for page in doc:
+#                 text += page.get_text()
+#     except Exception as e:
+#         st.error(f"Failed to extract text from the PDF: {e}")
+#     return text
+
+ef extract_text_from_pdf(uploaded_file):
+    pdf_reader = PyPDF2.PdfReader(uploaded_file)
     text = ""
-    try:
-        with fitz.open(stream=uploaded_file.read(), filetype="pdf") as doc:
-            for page in doc:
-                text += page.get_text()
-    except Exception as e:
-        st.error(f"Failed to extract text from the PDF: {e}")
+    
+    # Iterate through all pages and extract text
+    for page_num in range(len(pdf_reader.pages)):
+        page = pdf_reader.pages[page_num]
+        text += page.extract_text()
+        
     return text
+
+# Function to check if content exists in the resume
+def is_valid_resume(content):
+    # Check if the content contains essential words (e.g., "skill")
+    compulsory_words = ["skill"]
+    return any(word.lower() in content for word in compulsory_words)
+
+# Function to check if the number of pages exceeds the limit
+def check_page_limit(uploaded_file, max_pages=2):
+    pdf_reader = PyPDF2.PdfReader(uploaded_file)
+    num_pages = len(pdf_reader.pages)
+    if num_pages > max_pages:
+        return False, num_pages  # Resume has more pages than allowed
+    return True, num_pages  # Resume has valid number of pages
+
 
 # Initialize TF-IDF Vectorizer and KNN Model
 vectorizer = TfidfVectorizer(max_features=5000)
