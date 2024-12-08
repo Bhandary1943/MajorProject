@@ -1,24 +1,27 @@
-# Importing required libraries
-import streamlit as st  
-import pandas as pd  
-import re  
-import nltk  
-import numpy as np  
-import matplotlib.pyplot as plt 
-import smtplib  
-from email.mime.text import MIMEText  
-from email.mime.multipart import MIMEMultipart  
-from nltk.corpus import stopwords  
-from nltk.tokenize import word_tokenize  
-from nltk.stem import WordNetLemmatizer  
-import fitz  # PyMuPDF for handling PDF files
-from sklearn.feature_extraction.text import TfidfVectorizer  
-from sklearn.neighbors import NearestNeighbors  
+from tkinter import Image
+from PIL import Image
+
+from sklearn.metrics import accuracy_score
+
+import streamlit as st
+import pandas as pd
+import re
+import nltk
+import numpy as np
+import matplotlib.pyplot as plt
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
+import fitz  # PyMuPDF for PDF handling
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.neighbors import NearestNeighbors
 
 
 # Load the Dataset
 df = pd.read_csv('cleaned_file.csv')
-
 stop_words = set([
     'i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', 'your', 'yours', 
     'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', 'her', 'hers', 
@@ -37,12 +40,14 @@ stop_words = set([
     'weren', 'won', 'wouldn'
 ])
 
+# Manually define lemmatization (basic implementation using word forms)
 lemmatizer_dict = {
     'running': 'run', 'ran': 'run', 'runs': 'run', 
     'better': 'good', 'best': 'good', 'worse': 'bad', 'worst': 'bad',
     'happier': 'happy', 'happiest': 'happy', 'sadder': 'sad', 'saddest': 'sad',
     'more': 'much', 'most': 'much', 'less': 'little', 'least': 'little',
     'doing': 'do', 'did': 'do', 'does': 'do', 'done': 'do'
+    # Add more words as needed for lemmatization
 }
 
 # Preprocessing and Cleaning Functions
@@ -53,7 +58,8 @@ def clean_text(txt):
     clean_text = re.sub(r'\s+', ' ', clean_text).strip().lower()
     
     # Tokenization
-    tokens = re.findall(r'\b\w+\b', clean_text)  
+    tokens = re.findall(r'\b\w+\b', clean_text)
+    
     tokens = [word for word in tokens if word not in stop_words]
     
     # Lemmatize using the manually defined lemmatizer_dict
@@ -84,7 +90,6 @@ st.markdown("""<style>
         background-color: grey;  /* Light, clean background */
         color: pink;
         font-family: Georgia, 'Times New Roman', Times, serif;
-
     }
     .title {
         text-align: center;
@@ -94,13 +99,13 @@ st.markdown("""<style>
         text-transform: uppercase;
    font-family: Georgia, 'Times New Roman', Times, serif;
     }
+
     .subtitle {
         text-align: left;
         font-size: 20px;
         color: red;
         font-weight: 650;
         font-family: Arial, Helvetica, sans-serif;
-
     }
     .footer {
         text-align: center;
@@ -115,6 +120,8 @@ st.markdown("""<style>
         gap: 20px;
         margin-top: 20px;
     }
+
+    /* Job Item Style */
     .job-item {
         background-color: #ff6f61;  /* Bright Coral */
         color: white;
@@ -186,6 +193,7 @@ st.markdown("""<style>
         color: white;
     }
 
+    /* Explore More Button */
     .explore-more-btn {
         background-color: #ff9800;  /* Bright Orange */
         color: white;
@@ -257,15 +265,14 @@ page = st.sidebar.selectbox("Go to", ["Home","About Us", "Resume Analyzer", "Fin
 
 # Header (no line breaks, ensures single-line heading)
 st.markdown("<div class='title'>Intelligent Resume Analysis And Job Fit Assessment System</div>", unsafe_allow_html=True)
-# st.markdown(
-#     """
-#     <div style="text-align: center; color: #3498db; font-size: 15px; ">
-#         "Align. Review. Know. Keep Growing."
-#     </div>
-#     """, 
-#     unsafe_allow_html=True
-# )
-
+st.markdown(
+     """
+     <div style="text-align: center; color: #3498db; font-size: 15px; ">
+         "Align. Review. Know. Keep Growing."
+     </div>
+     """, 
+     unsafe_allow_html=True
+ )
 if page == "Home":
     st.markdown(
         """
@@ -330,6 +337,7 @@ if page == "Home":
     Use the sidebar to get started on your exciting journey to success! 🎯
     """)
 
+
 # About Us Page
 elif page == "About Us":
     st.markdown("<div class='subtitle'>About Us</div>", unsafe_allow_html=True)
@@ -382,8 +390,10 @@ elif page == "About Us":
         if explore_button:
             st.session_state.job_index = end_index  # Update to load the next set of jobs
 
-"Resume Analyzer"
-elif page == "Resume Analyzer":
+
+
+# Resume Analyzer Page
+if page == "Resume Analyzer":
     st.markdown("<div class='subtitle'>Resume Analyzer</div>", unsafe_allow_html=True)
 
     # Allow users to upload multiple files
@@ -496,6 +506,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+
 # Find Jobs Section
 if page == "Find Jobs":
     
@@ -532,7 +543,7 @@ if page == "Find Jobs":
     
     # Custom CSS for styling the page
     st.markdown("""
-    <style>    
+    <style>
     .j.job-portal-link {
     background-color: #ff1493;  /* Pink color */
     color: #fff;  /* White text for contrast */
@@ -583,8 +594,7 @@ if page == "Find Jobs":
     </style>
     """, unsafe_allow_html=True)
 
-   
-    
+
     # Create 3 columns for the links
     col1, col2, col3 = st.columns(3)
     
@@ -607,7 +617,6 @@ if page == "Find Jobs":
     st.markdown("<div class='encouragement'>Pro Tip: While applying, make sure to tailor your resume for each job. Highlight relevant skills, experiences, and achievements that align with the job description.</div>", unsafe_allow_html=True)
 
     st.markdown("<div class='encouragement'>Keep improving your skills and learning new ones. The right job is just around the corner!</div>", unsafe_allow_html=True)
-
 
 # Enhance Skills Page
 if page == "Enhance Skills":
@@ -709,15 +718,15 @@ if page == "Enhance Skills":
 .content {
     font-size: 18px;
     line-height: 1.6;
-  /* Dark color for better readability */
+    color: #333;  /* Dark color for better readability */
 }
     .content h3 {
         color: #333;
-        
+        font-size: 24px;
     }
     </style>
     """, unsafe_allow_html=True)
-
+        
 
 # Streamlit page for Contact Us
 if page == "Contact Us":
@@ -733,14 +742,56 @@ if page == "Contact Us":
     - **Phone**: +91 7676346378
     """)
 
-    
     # Custom CSS for better design and layout
     st.markdown("""
     <style>    
-        .stTextInput, .stTextArea {
+    .stButton>button {
+        background-color: #4CAF50;
+        color: white;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        padding: 10px 20px;
+        border-radius: 5px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .stButton>button:hover {
+        background-color: #45a049;
+    }
+
+    /* Input fields */
+    .stTextInput>div>input {
+        font-size: 16px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .stTextArea>div>textarea {
+        font-size: 16px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    /* Text alignment */
+    .stTextInput, .stTextArea {
         margin-bottom: 20px;
     }
 
+    /* Rating Style (Stars) */
+    .stRadio>div>label>div {
+        display: flex;
+        justify-content: center;
+        font-size: 24px;
+        color: #FFD700;  /* Gold color for stars */
+    }
+
+    .stRadio>div>label>div>input {
+        cursor: pointer;
+    }
+    
     </style>
     """, unsafe_allow_html=True)
 
