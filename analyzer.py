@@ -411,7 +411,7 @@ if page == "Resume Analyzer":
                     num_pages = len(pdf_reader.pages)
 
                     if num_pages > 2:
-                        st.error(f"The file {uploaded_file.name} has {num_pages} pages, which exceeds the maximum allowed limit of 2 pages, Please upload a resume with 1 or 2 pages".)
+                        st.error(f"The file {uploaded_file.name} has {num_pages} pages, which exceeds the maximum allowed limit of 2 pages, Please upload a resume with 1 or 2 pages.")
                         continue  # Skip processing if the resume exceeds the page limit
                         
                     resume_text = extract_text_from_pdf(uploaded_file)
