@@ -1,5 +1,5 @@
-from tkinter import Image
-from PIL import Image
+# from tkinter import Image
+# from PIL import Image
 
 from sklearn.metrics import accuracy_score
 
