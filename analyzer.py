@@ -78,7 +78,7 @@ def clean_text(txt):
 #         st.error(f"Failed to extract text from the PDF: {e}")
 #     return text
 
-ef extract_text_from_pdf(uploaded_file):
+def extract_text_from_pdf(uploaded_file):
     pdf_reader = PyPDF2.PdfReader(uploaded_file)
     text = ""
     
