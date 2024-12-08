@@ -382,63 +382,75 @@ elif page == "About Us":
         if explore_button:
             st.session_state.job_index = end_index  # Update to load the next set of jobs
 
-
-# Resume Analyzer Page
+"Resume Analyzer"
 elif page == "Resume Analyzer":
     st.markdown("<div class='subtitle'>Resume Analyzer</div>", unsafe_allow_html=True)
-    uploaded_file = st.file_uploader("Upload your resume PDF", type="pdf")
 
-    if uploaded_file:
-        with st.spinner("Processing resume..."):
-            resume_text = extract_text_from_pdf(uploaded_file)
-            cleaned_resume = clean_text(resume_text)
+    # Allow users to upload multiple files
+    uploaded_files = st.file_uploader("Upload multiple resume PDFs", type="pdf", accept_multiple_files=True)
 
-            # Check for compulsory resume words
-            compulsory_words = ["skill"]
-            if not any(word.lower() in cleaned_resume for word in compulsory_words):
-                st.error("This does not appear to be a valid resume. Please upload a valid resume PDF.")
-            else:
-                # Vectorize resume text
-                resume_vector = vectorizer.transform([cleaned_resume])
+    # Check if any files are uploaded
+    if uploaded_files:
+        for uploaded_file in uploaded_files:
+            try:
+                st.write(f"Processing: {uploaded_file.name}")
 
-                # Find the Top 5 Matching Jobs
-                distances, indices = knn.kneighbors(resume_vector)
+                # Process each uploaded resume
+                with st.spinner(f"Processing {uploaded_file.name}..."):
+                    resume_text = extract_text_from_pdf(uploaded_file)
+                    cleaned_resume = clean_text(resume_text)
+                    compulsory_words = ["skill"]
+                    
+                    # Check if skills are mentioned in the resume
+                    if not any(word.lower() in cleaned_resume for word in compulsory_words):
+                        st.error("This does not appear to be a valid resume. Please upload a valid resume PDF.")
+                        continue  # Skip processing if skills are not found
+                    else:
+                        # Vectorizing resume text
+                        resume_vector = vectorizer.transform([cleaned_resume])
 
-                # Ensure we're always getting the top 5 jobs, even if fewer are found
-                num_jobs = min(5, len(distances[0]))  # Use min to avoid index error
+                        # Find top 5 matching jobs using KNN
+                        distances, indices = knn.kneighbors(resume_vector)
 
-                # Check if the number of indices is less than expected
-                top_5_jobs = df.iloc[indices[0][:num_jobs]]  # Slice to get only the available jobs
-                accuracy_scores = []
+                        # Ensure we're always getting the top 5 jobs, even if fewer are found
+                        num_jobs = min(5, len(distances[0]))  # Use min to avoid index error
+                        top_5_jobs = df.iloc[indices[0][:num_jobs]]  # Slice to get only the available jobs
 
-                # Display the top jobs and calculate accuracy
-                st.markdown("<div class='subtitle'>Top Matching Job Titles</div>", unsafe_allow_html=True)
+                        st.markdown("---")  # Separator between different resumes
 
-                # Use neutral style for boxes
-                for i in range(num_jobs):  # Use num_jobs instead of iterating over indices directly
-                    job_index = indices[0][i]  # Get the job index
-                    score = 1 - distances[0][i]  # Calculate accuracy (1 - distance gives similarity score)
-                    accuracy_scores.append(score)
-                    job_row = df.iloc[job_index]  # Get the job details using the index
+            except Exception as e:
+                # Display error message for the specific file if any exception occurs
+                st.error(f"An error occurred while processing {uploaded_file.name}: {str(e)}")
 
-                    # Box styling with neutral background
+            # Only process job details if num_jobs is defined (i.e., skills were found and processing was successful)
+            if 'num_jobs' in locals():
+                # Box styling with neutral background for each job
+                for i in range(num_jobs):
+                    job_index = indices[0][i]
+                    score = 1 - distances[0][i]  # Calculate similarity score
+                    job_row = df.iloc[job_index]
+
+                    # Display job details inside the box without extra outside display
                     st.markdown(f"""
-                    <div style="
-                       /* Dark text for contrast */
-                        padding: 20px;
-                        margin: 10px;
-                        border-radius: 10px;
-                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                        font-size: 1.1em;
-                    ">
-                        <strong>Job Title:</strong> {job_row['Job Title']}<br>
-                        <strong>Matched Skills:</strong> {job_row['Skills']}<br>
-                        <strong>Accuracy:</strong> {score:.2f}
-                    </div>
+                        <div style="
+                            padding: 20px;
+                            margin: 10px;
+                            border-radius: 10px;
+                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                            font-size: 1.1em;
+                            background-color: #f4f4f4;
+                        ">
+                            <strong>Job Title:</strong> {job_row['Job Title']}<br>
+                            <strong>Matched Skills:</strong> {job_row['Skills']}<br>
+                            <strong>Accuracy:</strong> {score:.2f}
+                        </div>
                     """, unsafe_allow_html=True)
 
                 # Pie chart visualization for the top job accuracy scores
                 labels = top_5_jobs['Job Title']
+                accuracy_scores = [score for score in distances[0][:num_jobs]]  # Use the calculated accuracy scores
+
+                # Convert accuracy scores to percentages
                 sizes = [score * 100 for score in accuracy_scores]  # Convert to percentage
                 colors = plt.cm.Paired.colors  # Color palette
 
@@ -453,30 +465,36 @@ elif page == "Resume Analyzer":
 
                 # CSS animation and styling for highlighting
                 st.markdown(f"""
-                <div style="
-                    font-size: 2em;
-                    font-weight: bold;
-                    color: #ff6347;  /* Tomato color for emphasis */
-                    text-align: center;
-                    animation: pulse 2s infinite;
-                ">
-                    Top Matching Job: <span style="color: #008080;">{top_job_name}</span>
-                </div>
-
-                <style>
-                    @keyframes pulse {{
-                        0% {{ transform: scale(1); }}
-                        50% {{ transform: scale(1.1); }}
-                        100% {{ transform: scale(1); }}
-                    }}
-                </style>
+                    <div style="
+                        font-size: 2em;
+                        font-weight: bold;
+                        color: #ff6347;  /* Tomato color for emphasis */
+                        text-align: center;
+                        animation: pulse 2s infinite;
+                    ">
+                        Top Matching Job: <span style="color: #008080;">{top_job_name}</span>
+                    </div>
                 """, unsafe_allow_html=True)
 
                 # Add encouraging message
                 st.markdown("""
-                <div class='subtitle' style="color:green;">Keep it up! You're on the right track to finding your dream job!</div>
-                <p style="text-align:center;">By analyzing your resume, we've matched you with top roles based on your skills fit. Keep enhancing your skills and applying for opportunities!</p>
+                    <div class='subtitle' style="color:green;">Keep it up! You're on the right track to finding your dream job!</div>
+                    <p style="text-align:center;">By analyzing your resume, we've matched you with top roles based on your skills fit. Keep enhancing your skills and applying for opportunities!</p>
                 """, unsafe_allow_html=True)
+
+            # Reset num_jobs for the next resume
+            del num_jobs
+
+# External CSS for animation (not displayed in output)
+st.markdown("""
+    <style>
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 # Find Jobs Section
 if page == "Find Jobs":
