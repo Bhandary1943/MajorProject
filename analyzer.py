@@ -482,8 +482,7 @@ if page == "Resume Analyzer":
                             border-radius: 10px;
                             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                             font-size: 1.1em;
-                           
-                        ">
+                           ">
                             <strong>Job Title:</strong> {job_row['Job Title']}<br>
                             <strong>Matched Skills:</strong> {job_row['Skills']}<br>
                             <strong>Accuracy:</strong> {score:.2f}
