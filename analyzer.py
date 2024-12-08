@@ -2,7 +2,7 @@
 # from PIL import Image
 
 from sklearn.metrics import accuracy_score
-
+from PyPDF2 import PdfReader
 import streamlit as st
 import pandas as pd
 import re
@@ -407,6 +407,13 @@ if page == "Resume Analyzer":
 
                 # Process each uploaded resume
                 with st.spinner(f"Processing {uploaded_file.name}..."):
+                    pdf_reader = PdfReader(uploaded_file)
+                    num_pages = len(pdf_reader.pages)
+
+                    if num_pages > 2:
+                        st.error(f"The file {uploaded_file.name} has {num_pages} pages,  which exceeds the maximum allowed limit of 2 pages.")
+                        continue  # Skip processing if the resume exceeds the page limit
+                        
                     resume_text = extract_text_from_pdf(uploaded_file)
                     cleaned_resume = clean_text(resume_text)
                     compulsory_words = ["skill"]
