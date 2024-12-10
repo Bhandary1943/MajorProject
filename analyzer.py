@@ -90,18 +90,11 @@ def extract_text_from_pdf(uploaded_file):
     return text
 
 # Function to check if content exists in the resume
-# def is_valid_resume(content):
-#     # Check if the content contains essential words (e.g., "skill")
-#     compulsory_words = ["skill","Resume"]
-#     return any(word.lower() in content for word in compulsory_words)
-
 def is_valid_resume(content):
-    # Check if both "resume" and "skill" are present in the content
-    compulsory_words = ["resume", "skill"]
-    if all(word.lower() in content.lower() for word in compulsory_words):
-        return "Valid Resume"
-    else:
-        return "Invalid Resume"
+    # Check if the content contains essential words (e.g., "skill")
+    compulsory_words = ["skill","Resume"]
+    return any(word.lower() in content for word in compulsory_words)
+
 
 # Function to check if the number of pages exceeds the limit
 def check_page_limit(uploaded_file, max_pages=2):
