@@ -96,8 +96,8 @@ def extract_text_from_pdf(uploaded_file):
 #     return any(word.lower() in content for word in compulsory_words)
 
 def is_valid_resume(content):
-    # Check if both "skill" and "resume" are present in the content
-    compulsory_words = ["skill", "resume"]
+    # Check if both "resume" and "skill" are present in the content
+    compulsory_words = ["resume", "skill"]
     if all(word.lower() in content.lower() for word in compulsory_words):
         return "Valid Resume"
     else:
