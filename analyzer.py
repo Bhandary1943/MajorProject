@@ -1,6 +1,3 @@
-# from tkinter import Image
-# from PIL import Image
-
 from sklearn.metrics import accuracy_score
 from PyPDF2 import PdfReader
 import PyPDF2
@@ -66,17 +63,6 @@ def clean_text(txt):
     # Lemmatize using the manually defined lemmatizer_dict
     tokens = [lemmatizer_dict.get(word, word) for word in tokens]
     return ' '.join(tokens)
-
-# Extract text from PDF using PyMuPDF
-# def extract_text_from_pdf(uploaded_file):
-#     text = ""
-#     try:
-#         with fitz.open(stream=uploaded_file.read(), filetype="pdf") as doc:
-#             for page in doc:
-#                 text += page.get_text()
-#     except Exception as e:
-#         st.error(f"Failed to extract text from the PDF: {e}")
-#     return text
 
 def extract_text_from_pdf(uploaded_file):
     pdf_reader = PyPDF2.PdfReader(uploaded_file)
@@ -421,126 +407,6 @@ elif page == "About Us":
 
 
 # Resume Analyzer Page
-# if page == "Resume Analyzer":
-#     st.markdown("<div class='subtitle'>Resume Analyzer</div>", unsafe_allow_html=True)
-
-#     # Allow users to upload multiple files
-#     uploaded_files = st.file_uploader("Upload multiple resume PDFs", type="pdf", accept_multiple_files=True)
-
-#     # Check if any files are uploaded
-#     if uploaded_files:
-#         for uploaded_file in uploaded_files:
-#             try:
-#                 st.write(f"Processing: {uploaded_file.name}")
-
-#                 # Process each uploaded resume
-#                 with st.spinner(f"Processing {uploaded_file.name}..."):
-#                     pdf_reader = PdfReader(uploaded_file)
-#                     num_pages = len(pdf_reader.pages)
-
-#                     if num_pages > 2:
-#                         st.error(f"The file {uploaded_file.name} has {num_pages} pages, which exceeds the maximum allowed limit of 2 pages, Please upload a resume with 1 or 2 pages.")
-#                         continue  # Skip processing if the resume exceeds the page limit
-                        
-#                     resume_text = extract_text_from_pdf(uploaded_file)
-#                     cleaned_resume = clean_text(resume_text)
-#                     compulsory_words = ["skill"]
-                    
-#                     # Check if skills are mentioned in the resume
-#                     if not any(word.lower() in cleaned_resume for word in compulsory_words):
-#                         st.error("This does not appear to be a valid resume. Please upload a valid resume PDF.")
-#                         continue  # Skip processing if skills are not found
-#                     else:
-#                         # Vectorizing resume text
-#                         resume_vector = vectorizer.transform([cleaned_resume])
-
-#                         # Find top 5 matching jobs using KNN
-#                         distances, indices = knn.kneighbors(resume_vector)
-
-#                         # Ensure we're always getting the top 5 jobs, even if fewer are found
-#                         num_jobs = min(5, len(distances[0]))  # Use min to avoid index error
-#                         top_5_jobs = df.iloc[indices[0][:num_jobs]]  # Slice to get only the available jobs
-
-#                         st.markdown("---")  # Separator between different resumes
-
-#             except Exception as e:
-#                 # Display error message for the specific file if any exception occurs
-#                 st.error(f"An error occurred while processing {uploaded_file.name}: {str(e)}")
-
-#             # Only process job details if num_jobs is defined (i.e., skills were found and processing was successful)
-#             if 'num_jobs' in locals():
-#                 # Box styling with neutral background for each job
-#                 for i in range(num_jobs):
-#                     job_index = indices[0][i]
-#                     score = 1 - distances[0][i]  # Calculate similarity score
-#                     job_row = df.iloc[job_index]
-
-#                     # Display job details inside the box without extra outside display
-#                     st.markdown(f"""
-#                         <div style="
-#                             padding: 20px;
-#                             margin: 10px;
-#                             border-radius: 10px;
-#                             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-#                             font-size: 1.1em;
-#                            ">
-#                             <strong>Job Title:</strong> {job_row['Job Title']}<br>
-#                             <strong>Matched Skills:</strong> {job_row['Skills']}<br>
-                            
-#                         </div>
-#                     """, unsafe_allow_html=True)
-
-#                 # Pie chart visualization for the top job accuracy scores
-#                 labels = top_5_jobs['Job Title']
-#                 accuracy_scores = [score for score in distances[0][:num_jobs]]  # Use the calculated accuracy scores
-
-#                 # Convert accuracy scores to percentages
-#                 sizes = [score * 100 for score in accuracy_scores]  # Convert to percentage
-#                 colors = plt.cm.Paired.colors  # Color palette
-
-#                 fig, ax = plt.subplots()
-#                 ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90, colors=colors)
-#                 ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-
-#                 st.pyplot(fig)
-
-#                 # Highlight and animate the top job's name
-#                 top_job_name = top_5_jobs.iloc[0]['Job Title']
-
-#                 # CSS animation and styling for highlighting
-#                 st.markdown(f"""
-#                     <div style="
-#                         font-size: 2em;
-#                         font-weight: bold;
-#                         color: #ff6347;  /* Tomato color for emphasis */
-#                         text-align: center;
-#                         animation: pulse 2s infinite;
-#                     ">
-#                         Top Matching Job: <span style="color: #008080;">{top_job_name}</span>
-#                     </div>
-#                 """, unsafe_allow_html=True)
-
-#                 # Add encouraging message
-#                 st.markdown("""
-#                     <div class='subtitle' style="color:green;">Keep it up! You're on the right track to finding your dream job!</div>
-#                     <p style="text-align:center;">By analyzing your resume, we've matched you with top roles based on your skills fit. Keep enhancing your skills and applying for opportunities!</p>
-#                 """, unsafe_allow_html=True)
-
-#             # Reset num_jobs for the next resume
-#             del num_jobs
-
-# # External CSS for animation (not displayed in output)
-# st.markdown("""
-#     <style>
-#         @keyframes pulse {
-#             0% { transform: scale(1); }
-#             50% { transform: scale(1.1); }
-#             100% { transform: scale(1); }
-#         }
-#     </style>
-# """, unsafe_allow_html=True)
-
-
 if page == "Resume Analyzer":
     st.markdown("<div class='subtitle'>Resume Analyzer</div>", unsafe_allow_html=True)
 
@@ -589,7 +455,8 @@ if page == "Resume Analyzer":
 
             # Only process job details if num_jobs is defined (i.e., skills were found and processing was successful)
             if 'num_jobs' in locals():
-    # Box styling with neutral background for each job
+               
+                # Box styling with neutral background for each job
                 accuracy_scores = []  # Store accuracy scores for pie chart
 
                 for i in range(num_jobs):
@@ -599,22 +466,22 @@ if page == "Resume Analyzer":
 
                     job_row = df.iloc[job_index]
 
-        # Display job details inside the box
+                # Display job details inside the box
                     st.markdown(f"""
                         <div style="
-                padding: 20px;
-                margin: 10px;
-                border-radius: 10px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                font-size: 1.1em;
-                ">
-                <strong>Job Title:</strong> {job_row['Job Title']}<br>
-                <strong>Matched Skills:</strong> {job_row['Skills']}<br>
+                         padding: 20px;
+                         margin: 10px;
+                         border-radius: 10px;
+                         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                         font-size: 1.1em;
+                        ">
+                        <strong>Job Title:</strong> {job_row['Job Title']}<br>
+                        <strong>Matched Skills:</strong> {job_row['Skills']}<br>
                 
-            </div>
-        """, unsafe_allow_html=True)
+                      </div>
+                     """, unsafe_allow_html=True)
 
-    # Pie chart visualization for the top job accuracy scores
+                # Pie chart visualization for the top job accuracy scores
                 labels = top_5_jobs['Job Title']
                 sizes = [score * 100 for score in accuracy_scores]  # Use the same scores as above
                 colors = plt.cm.Paired.colors  # Color palette
@@ -659,6 +526,7 @@ st.markdown("""
         }
     </style>
 """, unsafe_allow_html=True)
+
 
 # Find Jobs Section
 if page == "Find Jobs":
